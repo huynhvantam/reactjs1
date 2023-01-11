@@ -1,20 +1,39 @@
-import React from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import './styles.css'
+
 
 TodoList.propTypes = {
-    TodoList: PropTypes.array
+    todoList: PropTypes.array,
+    onTodoClick: PropTypes.func,
 };
 
 TodoList.defaultProps = {
-    todoList:[]
+    todoList:[],
+    onTodoCLick: null
+
 }
 
-function TodoList({todoList}) {
+
+function TodoList({todoList, onTodoClick}) {
+    const handleTodoListChange = (todo, idx) => {
+        if(!onTodoClick) return;
+
+        onTodoClick(todo, idx);
+
+    }
+
     return (
         <div>
-            <ul>
-                {todoList.map(todoList =>(
-                    <li key={todoList.id}>{todoList.title}</li>
+            <ul  className='todo-list'>
+                {todoList.map((todoList,idx) =>(
+                    <li key={todoList.id}
+                    className={classnames({
+                    'todoList-item' : true,    
+                    compoleted: todoList.status === 'completed'})}
+                    onClick= {() => handleTodoListChange(todoList, idx)}
+                    >
+                        {todoList.status}</li>
                 ))}
             </ul>
         </div>
